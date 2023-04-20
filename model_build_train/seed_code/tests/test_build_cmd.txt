@@ -1,0 +1,27 @@
+# This is just my testing for running the pipeline locally before pushing to codecommit/codebuild
+# (ran from root dir)
+
+
+
+test_pipeline_build:
+pip install "sagemaker==2.114.0"
+python pipelines/foot_traffic/foot_traffic_pipeline.py
+
+
+
+# make sure the pipeline package is installed and up to date
+pip install -e .
+
+
+# specify the project name
+SAGEMAKER_PROJECT_NAME_ID="foot-traffic-build-train-sagemaker-foot-traffic-build-train"
+      
+      
+
+# run-pipeline (entrypoint from setuptools)
+# *note the execution role is not the same as the role that will be used by codebuild
+
+run-pipeline --module-name pipelines.foot_traffic.foot_traffic_pipeline --role-arn arn:aws:iam::644944822023:role/AmazonSageMaker-ExecutionRole-20230109T000000 --tags "[]" --kwargs "{\"region\":\"us-east-2\",\"role\":\"arn:aws:iam::644944822023:role/AmazonSageMaker-ExecutionRole-20230109T000000\",\"default_bucket\":\"sagemaker-us-east-2-644944822023\",\"pipeline_name\":\"${SAGEMAKER_PROJECT_NAME_ID}\",\"model_package_group_name\":\"foot-traffic-build-train-sagemaker-foot-traffic-build-train\",\"base_job_prefix\":\"traffic-build-train\",\"sagemaker_project_name\":\"traffic-build-train\"}"
+
+
+

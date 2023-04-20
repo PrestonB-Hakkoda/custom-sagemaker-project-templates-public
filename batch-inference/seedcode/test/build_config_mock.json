@@ -1,0 +1,7 @@
+{
+    "Parameters": {
+        "SageMakerProjectName": "foot-traffic-deploy",
+        "StageName": "staging"
+    }
+}
+ 

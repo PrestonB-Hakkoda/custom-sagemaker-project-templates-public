@@ -1,0 +1,7 @@
+pyyaml
+sagemaker
+boto3
+pandas
+pyarrow
+snowflake-connector-python[pandas]
+snowflake-snowpark-python[pandas]

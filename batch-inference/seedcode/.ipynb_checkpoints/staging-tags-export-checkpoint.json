@@ -1,0 +1,7 @@
+{
+    "sagemaker": {
+        "deployment-stage":	"staging",
+        "project-id":	"p-auzxnibcsrby",
+        "project-name":	"foot-traffic-batch-deploy"
+    }
+}

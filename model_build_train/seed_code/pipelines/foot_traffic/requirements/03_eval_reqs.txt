@@ -1,0 +1,6 @@
+pyyaml
+sagemaker
+boto3
+pandas
+pyarrow
+matplotlib

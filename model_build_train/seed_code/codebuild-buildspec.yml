@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - pip install --upgrade --force-reinstall . "awscli>1.20.30"
+      - pip install -e .
+  
+  build:
+    commands:
+      - export PYTHONUNBUFFERED=TRUE
+      #- export SAGEMAKER_PROJECT_NAME_ID="foot-traffic-v1"
+      - export SAGEMAKER_PROJECT_NAME_ID="foot-traffic-build-train-sagemaker-foot-traffic-build-train"
+      #- export SAGEMAKER_PIPELINE_ROLE_ARN="arn:aws:iam::644944822023:role/AmazonSageMaker-ExecutionRole-20230109T000000"
+      # catalog role:  - export  SAGEMAKER_PIPELINE_ROLE_ARN ="arn:aws:sts::644944822023:assumed-role/AmazonSageMakerServiceCatalogProductsCodeBuildRole/AWSCodeBuild-1f6edcdd-7ed7-440f-b21f-6947ba3095b7"
+      - export AWS_REGION="us-east-2"
+      - export ARTIFACT_BUCKET="sagemaker-us-east-2-644944822023"
+      - export PIPELINE_NAME="${SAGEMAKER_PROJECT_NAME_ID}"
+      - export SAGEMAKER_PROJECT_NAME="foot-traffic-build-train"
+      # - |
+      #   run-pipeline --module-name pipelines.foot_traffic.foot_traffic_pipeline \
+      #     --role-arn $SAGEMAKER_PIPELINE_ROLE_ARN \
+      #     --tags "[{\"Key\":\"sagemaker:project-name\", \"Value\":\"${SAGEMAKER_PROJECT_NAME}\"}, {\"Key\":\"sagemaker:project-id\", \"Value\":\"${SAGEMAKER_PROJECT_ID}\"}]" \
+      #     --kwargs "{\"region\":\"${AWS_REGION}\",\"role\":\"${SAGEMAKER_PIPELINE_ROLE_ARN}\",\"default_bucket\":\"${ARTIFACT_BUCKET}\",\"pipeline_name\":\"${SAGEMAKER_PROJECT_NAME_ID}\",\"model_package_group_name\":\"${SAGEMAKER_PROJECT_NAME_ID}\",\"base_job_prefix\":\"${SAGEMAKER_PROJECT_NAME_ID}\",\"sagemaker_project_name\":\"${SAGEMAKER_PROJECT_NAME}\"}"
+      - run-pipeline --module-name pipelines.foot_traffic.foot_traffic_pipeline --role-arn $SAGEMAKER_PIPELINE_ROLE_ARN --tags "[]" --kwargs "{\"region\":\"us-east-2\",\"role\":\"${SAGEMAKER_PIPELINE_ROLE_ARN}\",\"default_bucket\":\"sagemaker-us-east-2-644944822023\",\"pipeline_name\":\"${SAGEMAKER_PROJECT_NAME_ID}\",\"model_package_group_name\":\"foot-traffic-build-train-sagemaker-foot-traffic-build-train\",\"base_job_prefix\":\"traffic-build-train\",\"sagemaker_project_name\":\"traffic-build-train\"}"
+      
+      - echo "Create/Update of the SageMaker Pipeline and execution completed."
+      
