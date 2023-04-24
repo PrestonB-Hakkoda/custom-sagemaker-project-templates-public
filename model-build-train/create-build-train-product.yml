@@ -131,7 +131,7 @@ Resources:
   BootstrapS3Bucket:
     Type: AWS::S3::Bucket
     Properties: 
-      BucketName: !Join ['-',['sm-project-batchinference-example', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref 'AWS::StackId']]]]]]
+      BucketName: !Join ['-',['sm-project-sample-example', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref 'AWS::StackId']]]]]]
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true

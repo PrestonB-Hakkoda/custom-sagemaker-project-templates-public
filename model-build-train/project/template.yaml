@@ -21,44 +21,32 @@ Resources:
       BucketName: !Sub sagemaker-project-${SageMakerProjectId} # 58 chars max/ 64 allowed
 
 
-
   ModelBuildCodeCommitEventRule:
-    Type: 'AWS::Events::Rule'
+    Type: AWS::Events::Rule
     Properties:
-      Name: !Sub 'sagemaker-${SageMakerProjectName}-${SageMakerProjectId}-build'
-      Description: >-
-        Rule to trigger a deployment when ModelBuild CodeCommit repository is
-        updated
+      # Max length allowed: 64
+      Name: !Sub sagemaker-${SageMakerProjectName}-${SageMakerProjectId}-code # max: 10+33+15+4=62 chars
+      Description: "Rule to trigger a deployment when CodeCommit is updated with a commit"
       EventPattern:
         source:
-          - aws.codecommit
+          - "aws.codecommit"
         detail-type:
-          - CodeCommit Repository State Change
+          - "CodeCommit Repository State Change"
         resources:
           - !GetAtt ModelBuildCodeCommitRepository.Arn
         detail:
           referenceType:
-            - branch
+            - "branch"
           referenceName:
-            - main
-      State: ENABLED
+            - "main"
+      State: "ENABLED"
       Targets:
-        - Arn: !Join 
-            - ':'
-            - - arn
-              - !Ref 'AWS::Partition'
-              - codepipeline
-              - !Ref 'AWS::Region'
-              - !Ref 'AWS::AccountId'
-              - !Ref ModelBuildPipeline
-          RoleArn: !Join 
-            - ':'
-            - - arn
-              - !Ref 'AWS::Partition'
-              - 'iam:'
-              - !Ref 'AWS::AccountId'
-              - role/service-role/AmazonSageMakerServiceCatalogProductsUseRole
-          Id: !Sub 'codecommit-${SageMakerProjectName}-modelbuild'
+        -
+          Arn:
+            !Join [ ':', [ 'arn', !Ref 'AWS::Partition', 'codepipeline', !Ref 'AWS::Region', !Ref 'AWS::AccountId', !Ref ModelBuildPipeline ] ]
+          RoleArn:
+            !Join [ ':', [ 'arn', !Ref 'AWS::Partition', 'iam:', !Ref 'AWS::AccountId', 'role/service-role/AmazonSageMakerServiceCatalogProductsUseRole'] ]
+          Id: !Sub codecommit-${SageMakerProjectName}-trigger
 
 
 
