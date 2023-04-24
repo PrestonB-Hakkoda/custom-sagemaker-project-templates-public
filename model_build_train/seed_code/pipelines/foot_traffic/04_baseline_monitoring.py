@@ -53,9 +53,9 @@ if __name__ == "__main__":
     )
 
     my_default_monitor.suggest_baseline(
-        baseline_dataset='s3://sagemaker-us-east-2-644944822023/foot-traffic/data/baseline/batch_inf_no_target_with_header.csv', 
+        baseline_dataset='s3://mlops-sagemaker-testing-usf/foot-traffic/data/baseline/batch_inf_no_target_with_header.csv', 
         dataset_format=DatasetFormat.csv(header=True),
-        output_s3_uri='s3://sagemaker-us-east-2-644944822023/foot-traffic/data_quality/results',
+        output_s3_uri='s3://mlops-sagemaker-testing-usf/foot-traffic/data_quality/results',
         wait=True,
         logs=False,
     )

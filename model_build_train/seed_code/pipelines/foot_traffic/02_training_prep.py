@@ -230,7 +230,7 @@ if __name__ == "__main__":
 
     selected_features = ['normalized_visits_by_state_scaling',
                          'month', 'week_of_month', 
-                         'usf_div_nbr', 'recordsaddedtime', 'sum']
+                         'div_nbr', 'recordsaddedtime', 'sum']
 
     
     print("loading test data")

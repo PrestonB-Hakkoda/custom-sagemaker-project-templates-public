@@ -354,7 +354,7 @@ if __name__ == "__main__":
     # note - current dataset doesn't have a unique index, so using pandas index as identifier
     
     feature_group_name = 'foot-traffic-test-feature-group-processed'
-    feature_bucket = 'sagemaker-us-east-2-644944822023'
+    feature_bucket = 'mlops-sagemaker-testing-usf'
     feature_bucket_prefix = 'FootTrafficTestTransform/feature_store/'
     feature_catalog = 'AwsDataCatalog'
     feature_database = 'sagemaker_featurestore'

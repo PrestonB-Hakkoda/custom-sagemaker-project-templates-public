@@ -237,7 +237,7 @@ if __name__ == "__main__":
     
     # testing creation:
     feature_group_name = 'foot-traffic-test-feature-group-processed'
-    feature_bucket = 'sagemaker-us-east-2-644944822023'
+    feature_bucket = 'mlops-sagemaker-testing-usf'
     feature_bucket_prefix = 'FootTrafficTestTransform/feature_store/'
     feature_record_identifier_feature_name ='index'
     feature_event_time_feature_name = 'RecordsAddedTime'
@@ -248,7 +248,7 @@ if __name__ == "__main__":
                         'normalized_visits_by_state_scaling': [200],
                         'month': [3],
                         'week_of_month': [1],
-                        'usf_div_nbr': [2000],
+                        'div_nbr': [2000],
                         'sum': [50.2],
                         'RecordsAddedTime': [1677000326.0]
                     }

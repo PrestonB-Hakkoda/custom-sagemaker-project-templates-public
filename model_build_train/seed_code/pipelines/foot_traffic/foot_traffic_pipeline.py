@@ -204,7 +204,7 @@ def _get_pipeline_custom_tags(new_tags, region, sagemaker_project_name=None):
 def _construct_processors(pipeline_session,
                           sagemaker_session,
                           role,
-                          estimator_output_path:str = "s3://sagemaker-us-east-2-644944822023/FootTrafficTrain",
+                          estimator_output_path:str = "s3://mlops-sagemaker-testing-usf/FootTrafficTrain",
                           test_eng: bool = False,
                           test_prep:bool = False,
                           test_eval:bool = False,
@@ -388,7 +388,7 @@ def _create_pipeline_steps(
                            code_location_train = "02_foot-traffic-test-pipeline-extras/jobs/02_training_prep.py",
                            eval_code_location = "02_foot-traffic-test-pipeline-extras/jobs/03_eval.py",
                            baseline_code_location = "02_foot-traffic-test-pipeline-extras/jobs/04_baseline_monitoring.py",
-                           input_dataset_s3 = 's3://sagemaker-us-east-2-644944822023/foot_traffic_test/data/pipeline_input/ft_cases_per_week.csv',
+                           input_dataset_s3 = 's3://mlops-sagemaker-testing-usf/foot_traffic_test/data/pipeline_input/ft_cases_per_week_fake.csv',
                            intermediate_dataset_prefix = "foot-traffic",
                             ) -> tuple:
     """Define the core pipeline steps
@@ -424,13 +424,13 @@ def _create_pipeline_steps(
         },
         {
             "data_eng_reqs": {
-                "source": 's3://sagemaker-us-east-2-644944822023/foot-traffic/requirements/01_data_eng_reqs.txt',
+                "source": 's3://mlops-sagemaker-testing-usf/foot-traffic/requirements/01_data_eng_reqs.txt',
                 "destination": "/opt/ml/processing/pipeline_reqs"
             }
         },
         {
             "feature_store_script": {
-                "source": 's3://sagemaker-us-east-2-644944822023/foot-traffic/requirements/create_feature_store.py',
+                "source": 's3://mlops-sagemaker-testing-usf/foot-traffic/requirements/create_feature_store.py',
                 "destination": "/opt/ml/processing/feature_store"
             }
         }
@@ -447,7 +447,7 @@ def _create_pipeline_steps(
             "processed_foot_traffic": {
                 "output_name": "model_input",
                 "source": "/opt/ml/processing/processed",
-                "destination": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/processed/model_input.csv'
+                "destination": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/processed/model_input.csv'
             }
         }
     ]
@@ -479,13 +479,13 @@ def _create_pipeline_steps(
         # In the training prep script the input data is taken from the feature store and not this file
         {
             "data_input": {
-                "source": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/processed/model_input.csv',
+                "source": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/processed/model_input.csv',
                 "destination": "/opt/ml/processing/data"
             }
         },
         {
             "train_prep_reqs": {
-                "source": 's3://sagemaker-us-east-2-644944822023/foot-traffic/requirements/02_training_prep_reqs.txt',
+                "source": 's3://mlops-sagemaker-testing-usf/foot-traffic/requirements/02_training_prep_reqs.txt',
                 "destination": "/opt/ml/processing/pipeline_reqs"
             }
         },
@@ -495,19 +495,19 @@ def _create_pipeline_steps(
             "train": {
                 "output_name": "train",
                 "source": "/opt/ml/processing/train",
-                "destination": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/train/train.csv'}
+                "destination": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/train/train.csv'}
         },
         {
             "test": {
                 "output_name": "test",
                 "source": "/opt/ml/processing/test",
-                "destination": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/test/test.csv'}
+                "destination": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/test/test.csv'}
         },
         {
             "val": {
                 "output_name": "val",
                 "source": "/opt/ml/processing/val",
-                "destination": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/val/val.csv'}
+                "destination": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/val/val.csv'}
         },
 
         # We also need the data in a certain format to create the baseline
@@ -515,7 +515,7 @@ def _create_pipeline_steps(
         {
             "baseline_input": {
                 "output_name": "baseline",
-                "destination": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/baseline/batch_inf_no_target_with_header.csv',
+                "destination": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/baseline/batch_inf_no_target_with_header.csv',
                 "source": "/opt/ml/processing/baseline"
             }
         },
@@ -524,7 +524,7 @@ def _create_pipeline_steps(
         {
             "batch_transform_input": {
                 "output_name": "batch_inf",
-                "destination": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/batch_inf/batch_inf_no_target.csv',
+                "destination": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/batch_inf/batch_inf_no_target.csv',
                 "source": "/opt/ml/processing/batch_inf"
             }
         },
@@ -585,10 +585,10 @@ def _create_pipeline_steps(
 
 
 
-    training_input_train =  {"s3_data": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/train/train.csv',
+    training_input_train =  {"s3_data": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/train/train.csv',
                              "content_type": "text/csv"}
 
-    training_input_val =    {"s3_data": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/val/val.csv',
+    training_input_val =    {"s3_data": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/val/val.csv',
                              "content_type": "text/csv"}
 
     train_args = tuner.fit(
@@ -616,12 +616,12 @@ def _create_pipeline_steps(
     eval_inputs_list = [
         {
             "test_input": {
-                "source": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/test/test.csv',
+                "source": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/test/test.csv',
                 "destination": "/opt/ml/processing/test"}
         },
         {
             "eval_reqs": {
-                "source": 's3://sagemaker-us-east-2-644944822023/foot-traffic/requirements/03_eval_reqs.txt',
+                "source": 's3://mlops-sagemaker-testing-usf/foot-traffic/requirements/03_eval_reqs.txt',
                 "destination": "/opt/ml/processing/pipeline_reqs"
             }
         },
@@ -633,21 +633,21 @@ def _create_pipeline_steps(
             "output_score": {
                 "output_name": "evaluation",
                 "source": "/opt/ml/processing/evaluation",
-                "destination": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/evaluation/evaluation.json'}
+                "destination": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/evaluation/evaluation.json'}
 
         },
         {
             "metrics_chart": {
                 "output_name": "eval_chart",
                 "source": "/opt/ml/processing/chart/preds",
-                "destination": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/charts/preds/preds_plot.png'
+                "destination": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/charts/preds/preds_plot.png'
             }
         },
         {
             "foot_traffic_chart": {
                 "output_name": "traffic_chart",
                 "source": "/opt/ml/processing/chart/traffic",
-                "destination": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/charts/traffic/traffic_plot.png'
+                "destination": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/charts/traffic/traffic_plot.png'
             }
         }
     ]
@@ -667,7 +667,7 @@ def _create_pipeline_steps(
     # Update this path if testing!
     if test_eval:  
         eval_inputs = [ ProcessingInput(**list(item.values())[0]) for item in eval_inputs_list ]
-        eval_inputs = eval_inputs + [ProcessingInput(source = "s3://sagemaker-us-east-2-644944822023/FootTrafficTestTrain/p0ceb0gayvc7-FootTra-e4x3M4xyee-003-174f95b6/output/model.tar.gz",
+        eval_inputs = eval_inputs + [ProcessingInput(source = "s3://mlops-sagemaker-testing-usf/FootTrafficTestTrain/p0ceb0gayvc7-FootTra-e4x3M4xyee-003-174f95b6/output/model.tar.gz",
                                                                              destination = "/opt/ml/processing/model")]
 
     eval_outputs = [ ProcessingOutput(**list(item.values())[0]) for item in eval_outputs_list ]
@@ -700,13 +700,13 @@ def _create_pipeline_steps(
     baseline_inputs_list = [
         {
             "baseline_input": {
-                "source": f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/baseline/batch_inf_no_target_with_header.csv',
+                "source": f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/baseline/batch_inf_no_target_with_header.csv',
                 "destination": "/opt/ml/processing/baseline_input"
             }
         },
         {
             "baseline_reqs": {
-                "source": 's3://sagemaker-us-east-2-644944822023/foot-traffic/requirements/04_baseline_monitor_reqs.txt',
+                "source": 's3://mlops-sagemaker-testing-usf/foot-traffic/requirements/04_baseline_monitor_reqs.txt',
                 "destination": "/opt/ml/processing/pipeline_reqs"
             }
         },
@@ -812,7 +812,7 @@ def _create_extra_processing_steps(default_bucket,
 
     model_metrics = ModelMetrics(
         model_statistics=MetricsSource(
-            s3_uri=f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/evaluation/evaluation.json',
+            s3_uri=f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/evaluation/evaluation.json',
             content_type="application/json",
         )
     )
@@ -858,7 +858,7 @@ def _create_extra_processing_steps(default_bucket,
 
     batch_data = ParameterString(
         name="BatchData",
-        default_value=f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/test/test.csv',
+        default_value=f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/test/test.csv',
     )
 
 
@@ -885,9 +885,9 @@ def _create_extra_processing_steps(default_bucket,
 
     job_config = CheckJobConfig(role=role)
     data_quality_config = DataQualityCheckConfig(
-        baseline_dataset=f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data/baseline/batch_inf_no_target_with_header.csv',
+        baseline_dataset=f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data/baseline/batch_inf_no_target_with_header.csv',
         dataset_format=DatasetFormat.csv(header=False),
-        output_s3_uri=f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data_quality/reports',
+        output_s3_uri=f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data_quality/reports',
     )
 
 
@@ -901,8 +901,8 @@ def _create_extra_processing_steps(default_bucket,
         monitor_before_transform=True,
         # if violation is detected in the monitoring, you can skip it and continue running batch transform
         fail_on_violation=False,
-        supplied_baseline_statistics=f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data_quality/results/statistics.json',
-        supplied_baseline_constraints=f's3://sagemaker-us-east-2-644944822023/{intermediate_dataset_prefix}/data_quality/results/constraints.json',
+        supplied_baseline_statistics=f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data_quality/results/statistics.json',
+        supplied_baseline_constraints=f's3://mlops-sagemaker-testing-usf/{intermediate_dataset_prefix}/data_quality/results/constraints.json',
     )
     
     
@@ -1034,7 +1034,7 @@ def get_pipeline(
     model_package_group_name="FootTrafficModelPackageGroup",
     pipeline_name="FootTrafficModelBuildPipeline", 
     base_job_prefix="sagemaker/foot-traffic", # place to upload training files within the bucket
-    estimator_output_path = "s3://sagemaker-us-east-2-644944822023/FootTrafficTrain",
+    estimator_output_path = "s3://mlops-sagemaker-testing-usf/FootTrafficTrain",
     model_prefix = "FootTrafficTrain",
     
     test_eng = False,
@@ -1099,7 +1099,7 @@ def get_pipeline(
     
     transform_input_param = ParameterString(
         name="transform_input",
-        default_value=f's3://sagemaker-us-east-2-644944822023/foot-traffic/data/batch_inf/batch_inf_no_target.csv',
+        default_value=f's3://mlops-sagemaker-testing-usf/foot-traffic/data/batch_inf/batch_inf_no_target.csv',
     )
     
     
@@ -1148,7 +1148,7 @@ def get_pipeline(
                            code_location_train = os.path.join(BASE_DIR, "02_training_prep.py"),
                            eval_code_location = os.path.join(BASE_DIR, "03_eval.py"),
                            baseline_code_location = os.path.join(BASE_DIR, "04_baseline_monitoring.py"),
-                           input_dataset_s3 = 's3://sagemaker-us-east-2-644944822023/foot_traffic_test/data/pipeline_input/ft_cases_per_week.csv',
+                           input_dataset_s3 = 's3://mlops-sagemaker-testing-usf/foot_traffic_test/data/pipeline_input/ft_cases_per_week_fake.csv',
                            intermediate_dataset_prefix = "foot-traffic"
                             )
     
@@ -1218,7 +1218,7 @@ def get_pipeline_load_only(
     model_package_group_name="FootTrafficModelPackageGroup",
     pipeline_name="FootTrafficModelBuildPipeline", 
     base_job_prefix="sagemaker/foot-traffic", # place to upload training files within the bucket
-    estimator_output_path = "s3://sagemaker-us-east-2-644944822023/FootTrafficTrain",
+    estimator_output_path = "s3://mlops-sagemaker-testing-usf/FootTrafficTrain",
     model_prefix = "FootTrafficTrain",
     
     test_eng = False,
