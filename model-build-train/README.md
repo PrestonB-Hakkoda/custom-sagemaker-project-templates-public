@@ -2,21 +2,21 @@
 
 ## Purpose
 
-The purpose of this template is to deploy a scheduled batch inference using SageMaker Batch Transform and SageMaker Pipelines, given a `ModelGroupPackageName` from the Amazon SageMaker Model Registry. 
+The purpose of this template is to deploy a build train pipeline for a SageMaker Pipeline for batch jobs. Typically this template will be used alongside the batch-inference pipeline once a suitable model has been developed. 
 
 ## Architecture
 
-![batch-project](images/batch_inf_overview.png)
+![batch-project](images/foot_traffic_overview.png)
 
 
 ### Sagemaker Pipeline
-<img src="images/batch_inf_pipeline.png" width="400"/> 
+<img src="images/foot_traffic_pipeline.png" width="800"/> 
 
 ## Instructions
 
 Part 1: Create initial Service Catalog Product
 
-1. To create the Service Catalog product for this project, download the `create-batch-inference-product.yaml` and upload it into your CloudFormation console: https://console.aws.amazon.com/cloudformation
+1. To create the Service Catalog product for this project, download the `create-build-train-product.yaml` and upload it into your CloudFormation console: https://console.aws.amazon.com/cloudformation
 
 
 2. Update the Parameters section:
@@ -35,7 +35,7 @@ Part 1: Create initial Service Catalog Product
 
     - make sure that the zipped version of the repo url matches this repo's url. (https://github.com/foodgenius/custom-sagemaker-project-templates-public/archive/refs/heads/main.zip)
     - The name and branch should also match this repo (custom-sagemaker-project-templates-public-main)
-    - The project folder should be `batch-inference` for this project
+    - The project folder should be `model-build-train` for this project
 
         ![](images/batch-params-05.png)
 
@@ -56,7 +56,7 @@ Part 2: Deploy the Project inside of SageMaker Studio
 
 1. Choose the template and click Select the correct project template.
 
-    ![](../images/sm-projects-listing.png)
+    ![](images/create_project.png)
 
 6. Fill out the required fields for this project.
 
@@ -68,6 +68,6 @@ Part 2: Deploy the Project inside of SageMaker Studio
 
 7. Choose __Create Project__.
 
-    ![](images/batch-create-project.png)
+    ![](images/name_project.png)
 
 8. After a few minutes, your example project should be deployed and ready to use.
